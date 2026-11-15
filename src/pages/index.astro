@@ -1,0 +1,159 @@
+---
+import '../styles/styles.css';
+const base = import.meta.env.BASE_URL;
+const image = (name) => `${base}images/${name}.webp`;
+const api = import.meta.env.PUBLIC_BOOKING_API || '';
+const chapters = [
+  ['inicio', 'La actitud'], ['barberia', 'Tu sitio'], ['servicios', 'El ritual'],
+  ['equipo', 'Buenas manos'], ['reservar', 'Tu cita'], ['contacto', 'Nos vemos'],
+];
+const services = [
+  { id: 'corte', name: 'Corte', duration: 30, price: 24, note: 'Tijera, máquina y mucho criterio.' },
+  { id: 'barba', name: 'Barba', duration: 25, price: 18, note: 'Perfilado, toalla caliente y cuidado.' },
+  { id: 'corte-barba', name: 'Corte + barba', duration: 50, price: 38, note: 'El ritual completo. Sin prisas.' },
+];
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#171512" />
+    <meta name="description" content="La Navaja Barber Club. Una demo de barbería con carácter: corte, barba y reservas online." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="preload" as="image" href={image('hero')} fetchpriority="high" />
+    <title>La Navaja — Barber Club · Demo</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="La Navaja, inicio">LA NAVAJA<span>BARBER CLUB · BARCELONA</span></a>
+      <span class="header-note">OFICIO CLÁSICO. ACTITUD PROPIA.</span>
+      <a class="header-book" href="#reservar">RESERVAR <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <nav class="chapter-nav" aria-label="Secciones">
+      {chapters.map(([id, label], index) => (
+        <a href={`#${id}`} class:list={['chapter-link', { 'is-current': index === 0 }]} aria-label={`${index + 1}. ${label}`} aria-current={index === 0 ? 'location' : undefined}>
+          <span class="chapter-number">{String(index + 1).padStart(2, '0')}</span><span class="chapter-label">{label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <main id="contenido" tabindex="-1">
+      <section id="inicio" class="scene scene--hero is-active" aria-labelledby="hero-title" data-chapter="La actitud">
+        <img class="scene-photo" src={image('hero')} alt="Retrato de un hombre con corte texturizado y bigote cuidado" width="1536" height="1024" fetchpriority="high" />
+        <div class="scene-shade"></div>
+        <div class="scene-content hero-content">
+          <p class="eyebrow reveal">BARBERÍA CLÁSICA. ESTILO PROPIO.</p>
+          <h1 id="hero-title" class="display reveal">NO ES SOLO<br /><em>UN CORTE.</em></h1>
+          <p class="editorial-line reveal">Es cómo sales de aquí.</p>
+          <a class="text-link reveal" href="#barberia">DESLIZA PARA ENTRAR <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="scene-footer"><span>EST. 2026 / BARCELONA</span><span>01 — LA ACTITUD</span></div>
+      </section>
+
+      <section id="barberia" class="scene scene--place" aria-labelledby="place-title" data-chapter="Tu sitio">
+        <img class="scene-photo" src={image('interior')} alt="Sillón de cuero frente a un espejo clásico, entre madera oscura y lámparas cálidas" width="1536" height="1024" loading="lazy" />
+        <div class="scene-shade"></div>
+        <div class="scene-content place-content">
+          <p class="eyebrow reveal">BAJA EL RITMO. PONTE CÓMODO.</p>
+          <h2 id="place-title" class="display reveal">TU RATO.<br /><em>TU SITIO.</em></h2>
+        </div>
+        <div class="place-caption reveal"><p>El oficio de siempre.<br /><em>A tu manera.</em></p><span>Escuchamos lo que buscas. Cuidamos cada detalle.<br />Y te damos ese rato que también es para ti.</span></div>
+        <div class="scene-footer"><span>MADERA, CUERO Y BUENA CONVERSACIÓN.</span><span>02 — LA BARBERÍA</span></div>
+      </section>
+
+      <section id="servicios" class="scene scene--services" aria-labelledby="services-title" data-chapter="El ritual">
+        <img class="scene-photo" src={image('tools')} alt="Navaja, tijeras, brocha y peine sobre una mesa de madera" width="1536" height="1024" loading="lazy" />
+        <div class="scene-shade"></div>
+        <div class="scene-content services-content">
+          <p class="eyebrow reveal">LAS COSAS BIEN HECHAS LLEVAN SU TIEMPO.</p>
+          <h2 id="services-title" class="display reveal">EL <em>RITUAL.</em></h2>
+          <div class="service-list reveal">
+            {services.map((service, index) => <a class="service-row" href="#reservar" data-service={service.id}>
+              <span class="service-index">0{index + 1}</span><span class="service-name">{service.name}<small>{service.note}</small></span><span class="service-duration">{service.duration} min</span><span class="service-price">{service.price} €</span><span class="service-arrow" aria-hidden="true">↗</span>
+            </a>)}
+          </div>
+          <a class="text-link accent reveal" href="#reservar">ELIGE EL TUYO <span aria-hidden="true">↗</span></a>
+          <p class="fine-print reveal">Precios y servicios ilustrativos para esta demo.</p>
+        </div>
+        <div class="scene-footer"><span>EL DETALLE MARCA LA DIFERENCIA.</span><span>03 — SERVICIOS</span></div>
+      </section>
+
+      <section id="equipo" class="scene scene--team" aria-labelledby="team-title" data-chapter="Buenas manos">
+        <img class="scene-photo" src={image('team')} alt="Álex, Marc y Dani, los tres barberos ficticios de La Navaja" width="1536" height="1024" loading="lazy" />
+        <div class="scene-shade"></div>
+        <div class="scene-content team-content"><p class="eyebrow reveal">TRES ESTILOS. LA MISMA FORMA DE CUIDARTE.</p><h2 id="team-title" class="display reveal">BUENAS <em>MANOS.</em></h2></div>
+        <div class="barber-names reveal">
+          {['Álex', 'Marc', 'Dani'].map((name, index) => <a href="#reservar" data-barber={['alex', 'marc', 'dani'][index]}><span>0{index + 1} / BARBERO</span><strong>{name}</strong><small>Reservar conmigo ↗</small></a>)}
+        </div>
+        <div class="scene-footer"><span>ELIGE CON QUIÉN RESERVAR.</span><span>04 — EL EQUIPO</span></div>
+      </section>
+
+      <section id="reservar" class="scene scene--booking" aria-labelledby="booking-title" data-chapter="Tu cita">
+        <img class="scene-photo" src={image('tools')} alt="" width="1536" height="1024" loading="lazy" />
+        <div class="scene-shade"></div>
+        <div class="scene-content booking-content">
+          <div class="booking-intro reveal"><p class="eyebrow">UN RATO EN TU AGENDA.</p><h2 id="booking-title" class="display">ESTE HUECO<br /><em>ES TUYO.</em></h2><p class="editorial-line">Reserva sin llamadas.</p><p class="booking-caption">Elige tu ritual, encuentra tu hora<br />y deja el resto en nuestras manos.</p></div>
+          <div class="ledger reveal">
+            <div class="ledger-top"><span>LA NAVAJA / AGENDA</span><span class="demo-badge" id="booking-mode">MODO DEMO</span></div>
+            <h3>Tu próxima cita.</h3>
+            <p class="ledger-note" id="booking-note">Prueba la experiencia. No se creará una cita real.</p>
+            <ol class="booking-progress" aria-label="Pasos de la reserva">
+              <li aria-current="step"><span>01</span> Servicio</li><li><span>02</span> Día y hora</li><li><span>03</span> Tus datos</li>
+            </ol>
+            <form id="booking-form" data-api={api}>
+              <fieldset data-step="0">
+                <legend class="sr-only">Elige servicio y profesional</legend>
+                <label for="service">¿QUÉ TE APETECE?</label>
+                <select id="service" name="service" required>{services.map(s => <option value={s.id} selected={s.id === 'corte-barba'}>{s.name} · {s.duration} min · {s.price} €</option>)}</select>
+                <label for="barber">¿CON QUIÉN?</label>
+                <select id="barber" name="barber"><option value="any">Sin preferencia</option><option value="alex">Álex</option><option value="marc">Marc</option><option value="dani">Dani</option></select>
+                <button type="button" class="button button--red next-step">BUSCAR MI HORA <span aria-hidden="true">→</span></button>
+              </fieldset>
+              <fieldset data-step="1" hidden>
+                <legend class="sr-only">Elige día y hora</legend>
+                <label for="date">ELIGE EL DÍA</label><input id="date" name="date" type="date" required />
+                <fieldset class="times-fieldset"><legend>HORAS DISPONIBLES <span id="times-mode">DE EJEMPLO</span></legend><div class="time-slots" id="time-slots"></div></fieldset>
+                <p id="availability-status" role="status" class="field-status"></p>
+                <div class="form-actions"><button type="button" class="back-step">← Volver</button><button type="button" class="button button--red next-step" id="to-details">CONTINUAR →</button></div>
+              </fieldset>
+              <fieldset data-step="2" hidden>
+                <legend class="sr-only">Tus datos de contacto</legend>
+                <p id="booking-summary" class="booking-summary"></p>
+                <div class="input-pair"><div><label for="name">TU NOMBRE</label><input id="name" name="name" autocomplete="name" maxlength="80" required /></div><div><label for="phone">TELÉFONO <span>(OPCIONAL)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="25" /></div></div>
+                <label for="email">TU EMAIL</label><input id="email" name="email" type="email" autocomplete="email" maxlength="180" required />
+                <label class="consent"><input type="checkbox" id="consent" name="consent" required /><span id="consent-text">Entiendo que es una demo y que no se enviarán mis datos ni se reservará una cita real.</span></label>
+                <div class="form-actions"><button type="button" class="back-step">← Volver</button><button class="button button--red" type="submit" id="submit-booking">SIMULAR RESERVA ↗</button></div>
+              </fieldset>
+              <p class="form-error" id="form-error" role="alert"></p>
+            </form>
+            <div id="booking-result" hidden role="status" tabindex="-1"><span class="result-mark" aria-hidden="true">✓</span><h4 id="result-title">Así de fácil.</h4><p id="result-copy"></p><button type="button" class="button button--red" id="restart-booking">VOLVER A PROBAR ↗</button></div>
+            <noscript><p>Activa JavaScript para probar el formulario de reserva.</p></noscript>
+            <div class="ledger-bottom"><span>CORTE FINO. TRATO CERCANO.</span><span>BARBER CLUB</span></div>
+          </div>
+        </div>
+        <div class="scene-footer"><span>TU TIEMPO TAMBIÉN IMPORTA.</span><span>05 — RESERVAS</span></div>
+      </section>
+
+      <section id="contacto" class="scene scene--contact" aria-labelledby="contact-title" data-chapter="Nos vemos">
+        <img class="scene-photo" src={image('exterior')} alt="Fachada de una barbería de ambiente cálido, inspirada en el Eixample de Barcelona" width="1536" height="1024" loading="lazy" />
+        <div class="scene-shade"></div>
+        <div class="scene-content contact-content"><p class="eyebrow reveal">LA PUERTA ESTÁ ABIERTA.</p><h2 id="contact-title" class="display reveal">NOS VEMOS<br /><em>EN EL SILLÓN.</em></h2><div class="contact-info reveal"><p>Barcelona · Eixample</p><p>Lunes a sábado · 10:00–20:00</p><span>Ubicación y horario ilustrativos.</span></div><a href="#reservar" class="button button--red reveal">RESERVAR MI CITA ↗</a><button type="button" class="text-link faq-trigger reveal" id="open-faq" aria-haspopup="dialog">ANTES DE VENIR <span aria-hidden="true">+</span></button></div>
+        <footer class="scene-footer"><span>PROYECTO DEMO · IDENTIDAD Y DATOS ILUSTRATIVOS</span><a href="#inicio">VOLVER AL PRINCIPIO ↑</a></footer>
+      </section>
+    </main>
+    <div class="scene-counter" aria-hidden="true"><span id="current-scene">01</span><span class="counter-rule"></span><span>06</span></div>
+    <dialog id="faq-dialog" aria-labelledby="faq-title">
+      <div class="dialog-heading"><p class="eyebrow">ANTES DE SENTARTE</p><button type="button" id="close-faq" aria-label="Cerrar preguntas frecuentes">✕</button></div>
+      <h2 id="faq-title">Las cosas claras.</h2>
+      <details><summary>¿Puedo elegir barbero?</summary><p>Sí. El formulario permite seleccionar Álex, Marc o Dani, o continuar sin preferencia. En esta demo todos son perfiles ficticios.</p></details>
+      <details><summary>¿Cómo cambio o cancelo mi cita?</summary><p>Cuando conectemos la agenda real, el email de confirmación podrá incluir un enlace para gestionarla. En esta versión no se crean citas ni se envían emails.</p></details>
+      <details><summary>¿Esta barbería existe?</summary><p>La Navaja es una demo de diseño web y automatización. Su identidad, equipo, imágenes, precios y ubicación son ilustrativos.</p></details>
+      <p class="dialog-footer">EL OFICIO DE SIEMPRE. A TU MANERA.</p>
+    </dialog>
+    <script>import '../scripts/main.js';</script>
+  </body>
+</html>
